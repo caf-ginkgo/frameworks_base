@@ -42,6 +42,7 @@ LOCAL_REQUIRED_MODULES := \
         FontArbutusSourceOverlay \
 	FontRubikRubikOverlay \
 	FontGoogleSansOverlay \
+	FontGoogleSansLatoOverlay \
         FontKaiOverlay \
         FontSamOverlay \
         FontVictorOverlay \
