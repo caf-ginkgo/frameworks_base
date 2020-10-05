@@ -63,9 +63,11 @@ import androidx.lifecycle.LifecycleRegistry;
 import com.android.internal.config.sysui.SystemUiDeviceConfigFlags;
 import com.android.settingslib.Utils;
 import com.android.systemui.BatteryMeterView;
+import com.android.systemui.Dependency;
 import com.android.systemui.DualToneHandler;
 import com.android.systemui.Interpolators;
 import com.android.systemui.R;
+import com.android.systemui.arrow.ArrowSettingsService;
 import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.DarkIconDispatcher;
 import com.android.systemui.plugins.DarkIconDispatcher.DarkReceiver;
@@ -102,7 +104,8 @@ import javax.inject.Named;
  */
 public class QuickStatusBarHeader extends RelativeLayout implements
         View.OnClickListener, NextAlarmController.NextAlarmChangeCallback,
-        ZenModeController.Callback, LifecycleOwner {
+        ZenModeController.Callback, LifecycleOwner,
+        ArrowSettingsService.ArrowSettingsObserver {
     private static final String TAG = "QuickStatusBarHeader";
     private static final boolean DEBUG = false;
 
@@ -520,6 +523,10 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         // Change the ignored slots when DeviceConfig flag changes
         DeviceConfig.addOnPropertiesChangedListener(DeviceConfig.NAMESPACE_PRIVACY,
                 mContext.getMainExecutor(), mPropertiesListener);
+        Dependency.get(ArrowSettingsService.class).addIntObserver(this, Settings.System.QS_LAYOUT_COLUMNS);
+        Dependency.get(ArrowSettingsService.class).addIntObserver(this, Settings.System.QS_LAYOUT_COLUMNS_LANDSCAPE);
+        Dependency.get(ArrowSettingsService.class).addIntObserver(this, Settings.System.QS_QUICKBAR_COLUMNS);
+        Dependency.get(ArrowSettingsService.class).addIntObserver(this, Settings.System.QS_TILE_TITLE_VISIBILITY);
     }
 
     @Override
@@ -591,6 +598,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mRingerModeTracker.getRingerModeInternal().removeObservers(this);
         mStatusBarIconController.removeIconGroup(mIconManager);
         DeviceConfig.removeOnPropertiesChangedListener(mPropertiesListener);
+        Dependency.get(ArrowSettingsService.class).removeObserver(this);
         super.onDetachedFromWindow();
     }
 
@@ -746,6 +754,18 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             mHeaderTextContainerView.setAlpha(MathUtils.lerp(0.0f, mExpandedHeaderAlpha,
                     mKeyguardExpansionFraction));
             updateHeaderTextContainerAlphaAnimator();
+        }
+    }
+
+    @Override
+    public void onIntSettingChanged(String key, Integer newValue) {
+        if (DEBUG) Log.d(TAG, "onIntSettingChanged " + key + " -> " + newValue);
+        if (mQsPanel != null) {
+            mQsPanel.updateSettings();
+        }
+        // if count is -1 it depends on mQsPanel so it must be afterwards
+        if (mHeaderQsPanel != null) {
+            mHeaderQsPanel.updateSettings();
         }
     }
 }
