@@ -30,6 +30,8 @@ import android.metrics.LogMaker;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -145,7 +147,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
     private int mMediaTotalBottomMargin;
     private int mFooterMarginStartHorizontal;
     private Consumer<Boolean> mMediaVisibilityChangedListener;
-
+    private boolean mMediaVisible;
 
     @Inject
     public QSPanel(
@@ -214,9 +216,8 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
 
     protected void onMediaVisibilityChanged(Boolean visible) {
         switchTileLayout();
-        if (getTileLayout() != null) {
-            getTileLayout().setMinRows(visible ? 2 : 3);
-        }
+        mMediaVisible = visible;
+        updateMinRows();
         if (mMediaVisibilityChangedListener != null) {
             mMediaVisibilityChangedListener.accept(visible);
         }
@@ -387,6 +388,22 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         view.setVisibility(TunerService.parseIntegerSwitch(newValue, true) ? VISIBLE : GONE);
     }
 
+    private void updateMinRows() {
+        if (getTileLayout() == null) {
+            return;
+        }
+        if (!mMediaVisible) {
+            int rows = Settings.System.getIntForUser(
+                    mContext.getContentResolver(), Settings.System.QS_LAYOUT_ROWS, 3,
+                    UserHandle.USER_CURRENT);
+            boolean isPortrait = mContext.getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_PORTRAIT;
+            getTileLayout().setMinRows(isPortrait ? rows : 1);
+        } else {
+            getTileLayout().setMinRows(2);
+        }
+    }
+
     public void openDetails(String subPanel) {
         QSTile tile = getTile(subPanel);
         // If there's no tile with that name (as defined in QSFactoryImpl or other QSFactory),
@@ -518,6 +535,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         if (newConfig.orientation != mLastOrientation) {
             mLastOrientation = newConfig.orientation;
             switchTileLayout();
+            updateMinRows();
         }
     }
 
@@ -1203,5 +1221,6 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         if (mTileLayout != null) {
             mTileLayout.updateSettings();
         }
+        updateMinRows();
     }
 }
