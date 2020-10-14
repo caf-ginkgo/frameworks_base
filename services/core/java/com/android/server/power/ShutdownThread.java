@@ -345,7 +345,7 @@ public final class ShutdownThread extends Thread {
                     pd.setIndeterminate(true);
                 } else {
                     // Factory reset path. Set the dialog message accordingly.
-                    pd.setTitle(context.getText(com.android.internal.R.string.reboot_to_reset_title));
+                    // pd.setTitle(context.getText(com.android.internal.R.string.reboot_to_reset_title));
                     pd.setMessage(context.getText(
                                 com.android.internal.R.string.reboot_to_reset_message));
                     pd.setIndeterminate(true);
