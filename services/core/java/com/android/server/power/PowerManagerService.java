@@ -5143,6 +5143,7 @@ public final class PowerManagerService extends SystemService
             if (PowerManager.REBOOT_RECOVERY.equals(reason)
                     || PowerManager.REBOOT_RECOVERY_UPDATE.equals(reason)) {
                 mContext.enforceCallingOrSelfPermission(android.Manifest.permission.RECOVERY, null);
+                reason = ""; // Hack to prevent buggy apps "factory reset" reboot to recovery
             }
 
             final long ident = Binder.clearCallingIdentity();
