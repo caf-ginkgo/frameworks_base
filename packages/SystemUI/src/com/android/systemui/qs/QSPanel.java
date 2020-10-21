@@ -143,11 +143,11 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
     private QSTileLayout mHorizontalTileLayout;
     protected QSTileLayout mRegularTileLayout;
     protected QSTileLayout mTileLayout;
+    private int mMediaPlayerVisible = 0;
     private int mLastOrientation = -1;
     private int mMediaTotalBottomMargin;
     private int mFooterMarginStartHorizontal;
     private Consumer<Boolean> mMediaVisibilityChangedListener;
-    private boolean mMediaVisible;
 
     @Inject
     public QSPanel(
@@ -216,8 +216,6 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
 
     protected void onMediaVisibilityChanged(Boolean visible) {
         switchTileLayout();
-        mMediaVisible = visible;
-        updateMinRows();
         if (mMediaVisibilityChangedListener != null) {
             mMediaVisibilityChangedListener.accept(visible);
         }
@@ -392,7 +390,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         if (getTileLayout() == null) {
             return;
         }
-        if (!mMediaVisible) {
+        if (!mMediaHost.getVisible()) {
             int rows = Settings.System.getIntForUser(
                     mContext.getContentResolver(), Settings.System.QS_LAYOUT_ROWS, 3,
                     UserHandle.USER_CURRENT);
@@ -493,8 +491,8 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                 R.dimen.qs_footer_horizontal_margin);
         mVisualTilePadding = (int) ((tileSize - tileBg) / 2.0f);
         updatePadding();
-
         updatePageIndicator();
+        updateMinRows();
 
         for (TileRecord r : mRecords) {
             r.tile.clearState();
@@ -535,7 +533,6 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         if (newConfig.orientation != mLastOrientation) {
             mLastOrientation = newConfig.orientation;
             switchTileLayout();
-            updateMinRows();
         }
     }
 
@@ -580,7 +577,6 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
             if (mHost != null) setTiles(mHost.getTiles());
             newLayout.setListening(mListening);
             if (needsDynamicRowsAndColumns()) {
-                newLayout.setMinRows(horizontal ? 2 : 1);
                 // Let's use 3 columns to match the current layout
                 newLayout.setMaxColumns(horizontal ? 3 : TileLayout.NO_MAX_COLUMNS);
             }
@@ -590,8 +586,10 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
             updateMediaHostContentMargins();
             updateHorizontalLinearLayoutMargins();
             updatePadding();
+            updateMinRows();
             return true;
         }
+        updateMinRows();
         return false;
     }
 
@@ -1218,9 +1216,9 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
     }
 
     public void updateSettings() {
+        updateMinRows();
         if (mTileLayout != null) {
             mTileLayout.updateSettings();
         }
-        updateMinRows();
     }
 }

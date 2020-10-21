@@ -76,6 +76,7 @@ public class TileLayout extends ViewGroup implements QSTileLayout {
         if (mMinRows != minRows) {
             mMinRows = minRows;
             updateResources();
+            requestLayout();
             return true;
         }
         return false;
