@@ -2851,7 +2851,7 @@
     <string name="config_persistentDataPackageName" translatable="false">com.google.android.gms</string>
 
     <!-- Flag indicating which package name can access DeviceConfig table -->
-    <string name="config_deviceConfiguratorPackageName" translatable="false"></string>
+    <string name="config_deviceConfiguratorPackageName" translatable="false">org.protonaosp.deviceconfig</string>
 
     <!--  Define optional package verifier name -->
     <string name="config_optionalPackageVerifierName" translatable="false"></string>
