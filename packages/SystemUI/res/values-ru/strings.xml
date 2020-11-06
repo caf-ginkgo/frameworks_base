@@ -1093,4 +1093,12 @@
     <string name="controls_added_tooltip" msgid="4842812921719153085">"Удерживайте кнопку питания, чтобы увидеть новые элементы управления"</string>
     <string name="controls_menu_add" msgid="4447246119229920050">"Добавить виджеты"</string>
     <string name="controls_menu_edit" msgid="890623986951347062">"Изменить виджеты"</string>
+    <string name="qs_menu_item_columns">Колонки</string>
+    <string name="qs_menu_item_columns_landscape">Колонки (ландшафт)</string>
+    <string name="qs_menu_item_qs_rows">Макс. рядов</string>
+    <string name="qs_menu_item_reset">Сбросить</string>
+    <string name="global_action_reboot">Перезагрузить</string>
+    <string name="global_action_reboot_more">Перезагрузить\u2026</string>
+    <string name="global_action_settings">Настройки</string>
+    <string name="global_action_reboot_bootloader">Загрузчик</string>
 </resources>
