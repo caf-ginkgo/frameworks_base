@@ -2867,4 +2867,7 @@
     <string name="global_action_reboot_recovery">Recovery</string>
     <string name="global_action_reboot_bootloader">Bootloader</string>
     <string name="global_action_settings">Settings</string>
+
+    <!-- Statusbar network activity indicators -->
+    <string name="status_bar_network_activity">Network activity indicators</string>
 </resources>
