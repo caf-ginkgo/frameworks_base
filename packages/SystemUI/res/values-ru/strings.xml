@@ -1101,4 +1101,8 @@
     <string name="global_action_reboot_more">Перезагрузить\u2026</string>
     <string name="global_action_settings">Настройки</string>
     <string name="global_action_reboot_bootloader">Загрузчик</string>
+    <string name="quick_settings_caffeine_label">Запрет сна</string>
+    <string name="accessibility_quick_settings_caffeine_off">Запрет сна выкл.</string>
+    <string name="accessibility_quick_settings_caffeine_on">Запрет сна вкл.</string>
+    <string name="status_bar_network_activity">Индикаторы трафика</string>
 </resources>
