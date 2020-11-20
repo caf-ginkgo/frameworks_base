@@ -80,7 +80,7 @@ public class NfcTile extends QSTileImpl<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
-        return new Intent(Settings.Panel.ACTION_NFC);
+        return new Intent(Settings.ACTION_NFC_SETTINGS);
     }
 
     @Override
