@@ -4810,10 +4810,15 @@ public final class Settings {
         public static final String OMNI_QS_LAYOUT_COLUMNS = "qs_layout_columns";
 
         /**
-         * Number of maximum qs rows to show
+         * Whether to display qs tile titles in the qs panel
          * @hide
          */
-        public static final String QS_LAYOUT_ROWS = "qs_layout_rows";
+        public static final String OMNI_QS_TILE_TITLE_VISIBILITY = "qs_tile_title_visibility";
+
+        /**
+         * @hide
+         */
+        public static final String OMNI_QS_LAYOUT_ROWS = "qs_layout_rows";
 
         /**
          * Keys we no longer back up under the current schema, but want to continue to
@@ -4937,7 +4942,8 @@ public final class Settings {
             PRIVATE_SETTINGS.add(CALL_CONNECTED_TONE_ENABLED);
             PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_COLUMNS_LANDSCAPE);
             PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_COLUMNS);
-            PRIVATE_SETTINGS.add(QS_LAYOUT_ROWS);
+            PRIVATE_SETTINGS.add(OMNI_QS_TILE_TITLE_VISIBILITY);
+            PRIVATE_SETTINGS.add(OMNI_QS_LAYOUT_ROWS);
         }
 
         /**
